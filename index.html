@@ -1,72 +1,108 @@
 <!DOCTYPE html>
-  <html lang="ko">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dcompany - Mobile App Developer</title>
-    <meta name="description" content="Dcompany is a mobile app development studio creating simple and secure
-  productivity apps.">
-    <style>
-      body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        max-width: 720px;
-        margin: 0 auto;
-        padding: 40px 20px;
-        line-height: 1.6;
-        color: #333;
-      }
-      h1 { color: #1a73e8; border-bottom: 2px solid #1a73e8; padding-bottom: 8px; }
-      h2 { color: #555; margin-top: 32px; }
-      a { color: #1a73e8; text-decoration: none; }
-      a:hover { text-decoration: underline; }
-      .app-card {
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
-        padding: 16px;
-        margin: 12px 0;
-      }
-      .info-box {
-        background: #f5f5f5;
-        padding: 16px;
-        border-radius: 8px;
-        margin-top: 16px;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>Dcompany</h1>
-    <p>We develop simple, secure, and user-friendly mobile applications focused on productivity and daily
-  convenience.</p>
-
-    <h2>Our Apps</h2>
-    <div class="app-card">
-      <h3>AllMemo - Simple Memo Notes</h3>
-      <p>A lightweight, private memo app with lock feature and search support. Available for Android.</p>
-      <p><a href="https://play.google.com/store/apps/details?id=com.dcompany.allmemo" target="_blank">View on Google
-  Play →</a></p>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dcompany — Mobile Game &amp; App Studio</title>
+  <meta name="description" content="Dcompany is an independent mobile game and app studio developing the puzzle strategy game Sector31 and the memo app AllMemo.">
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <a class="brand" href="./"><img src="images/logo_d.png" alt="Dcompany logo">Dcompany</a>
+      <nav>
+        <a class="active" href="./">Home</a>
+        <a href="sector31/">Sector31</a>
+        <a href="allmemo/">AllMemo</a>
+        <a href="support/">Support</a>
+        <a href="privacy/">Privacy</a>
+      </nav>
     </div>
+  </header>
 
-    <h2>Contact</h2>
-    <div class="info-box">
-      <p><strong>Email:</strong> dcompanyservicemail@gmail.com</p>
-      <p><strong>Phone:</strong> +82-70-4259-0338</p>
+  <div class="hero">
+    <div class="wrap">
+      <div class="text">
+        <h1>Dcompany</h1>
+        <p>An independent studio making mobile games and apps for iOS and Android.
+          We are currently developing <strong>Sector31</strong>, a puzzle strategy game set across the planets of a distant sector.</p>
+        <a class="btn" href="sector31/">Discover Sector31</a>
+        <a class="btn ghost" href="support/">Contact us</a>
+      </div>
+      <div class="art"><img src="images/keyart_toast.jpg" alt="Sector31 key art: a character in a space suit holding a bomb, standing in a space station"></div>
     </div>
+  </div>
 
-    <h2>Business Information</h2>
-    <div class="info-box">
-      <p><strong>Business Name:</strong> Dcompany</p>
-      <p><strong>E-Commerce Registration:</strong> 제2018-인천미추홀-0143호</p>
-      <p><strong>Issued by:</strong> 인천광역시 미추홀구청</p>
+  <section>
+    <div class="wrap">
+      <h2>Our Products</h2>
+      <p class="lead">Games and tools we design, build and operate ourselves.</p>
+      <div class="grid">
+        <div class="card product">
+          <img class="icon" src="images/icon_sector31.png" alt="Sector31 app icon">
+          <div>
+            <span class="badge">In development · iOS / Android</span>
+            <h3>Sector31</h3>
+            <p>A puzzle strategy game. Move step by step across a grid, avoid or break obstacles, and travel deeper into each planet.</p>
+            <p><a href="sector31/">Learn more →</a></p>
+          </div>
+        </div>
+        <div class="card product">
+          <img class="icon" src="images/icon_allmemo.png" alt="AllMemo app icon">
+          <div>
+            <span class="badge live">Available · Android</span>
+            <h3>AllMemo</h3>
+            <p>A lightweight, private memo app with a lock feature and search.</p>
+            <p><a href="allmemo/">Learn more →</a></p>
+          </div>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <h2>Privacy Policy</h2>
-    <p><a href="https://dcompanyservice.github.io/allmemo-privacy/" target="_blank">View AllMemo Privacy Policy
-  →</a></p>
+  <section class="alt">
+    <div class="wrap">
+      <h2>About Us</h2>
+      <p class="lead">Small team, carefully crafted games.</p>
+      <div class="grid">
+        <div class="card">
+          <h3>What we make</h3>
+          <p>Mobile games with hand-drawn characters and grid-based puzzle strategy, plus simple everyday apps.</p>
+        </div>
+        <div class="card">
+          <h3>How we work</h3>
+          <p>We develop, publish and operate our titles ourselves, including our own game servers and live updates.</p>
+        </div>
+        <div class="card">
+          <h3>Where to follow</h3>
+          <p>Development updates for Sector31 are shared on <a href="https://x.com/dcompanyx" target="_blank" rel="noopener">X (@dcompanyx)</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <h2>Support</h2>
-    <p>For app support, please contact us via email above.</p>
+  <section>
+    <div class="wrap">
+      <h2>Company Information</h2>
+      <div class="info">
+        <p><strong>Company:</strong> Dcompany</p>
+        <p><strong>Website:</strong> sector-31.com (operated by Dcompany)</p>
+        <p><strong>Email:</strong> <a href="mailto:contact@sector-31.com">contact@sector-31.com</a></p>
+        <p><strong>Phone:</strong> +82-70-4259-0338</p>
+        <p><strong>Business Registration No.:</strong> 119-20-24793</p>
+        <p><strong>Mail-Order Business Registration No.:</strong> 2026-Gyeonggi Siheung-1933</p>
+        <p><strong>Address:</strong> 301-A047, 3F, 10 Seochonsangga 2-gil, Siheung-si, Gyeonggi-do 15036</p>
+      </div>
+    </div>
+  </section>
 
-    <hr style="margin-top: 48px; border: none; border-top: 1px solid #e0e0e0;">
-    <p style="text-align: center; color: #999; font-size: 14px;">© 2026 Dcompany. All rights reserved.</p>
-  </body>
-  </html>
+  <footer class="site-footer">
+    <div class="inner">
+      <div>© 2026 Dcompany. All rights reserved.</div>
+      <div><a href="support/">Support</a><a href="privacy/">Privacy Policy</a><a href="mailto:contact@sector-31.com">contact@sector-31.com</a></div>
+    </div>
+  </footer>
+</body>
+</html>
