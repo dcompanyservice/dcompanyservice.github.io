@@ -94,7 +94,7 @@ h2 { font-size: 30px; margin: 0 0 10px; letter-spacing: .01em; }
 .figure img { border-radius: 14px; border: 1px solid var(--line-2); box-shadow: 0 10px 30px rgba(0,0,0,.45); }
 .figure p { font-size: 14px; color: var(--muted); margin: 10px 0 0; }
 .shot-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 260px)); }
-.planet-grid { grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); }
+.planet-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
 
 /* 캐릭터·행성 이미지는 흰 배경 소재라 어두운 판 위에 흰 카드로 띄운다 */
 .char img, .planet img {
