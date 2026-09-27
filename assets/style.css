@@ -132,6 +132,9 @@ h2 { font-size: 30px; margin: 0 0 10px; letter-spacing: .01em; }
 .site-footer { border-top: 1px solid var(--line); background: rgba(6,8,16,.7); margin-top: 0; padding: 30px 0 44px; color: var(--muted); font-size: 14px; }
 .site-footer .inner { max-width: 1040px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
 .site-footer a { color: var(--muted); margin-right: 14px; }
+.site-footer .lang-switch { font-size: 13px; opacity: .85; }
+.site-footer .lang-switch a { margin-right: 0; }
+.site-footer .lang-switch strong { color: var(--ink); font-weight: 600; }
 .site-footer a:hover { color: var(--ink); }
 
 @media (max-width: 640px) {
