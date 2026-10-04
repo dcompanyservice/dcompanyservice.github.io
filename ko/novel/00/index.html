@@ -63,5 +63,9 @@
       <div><a href="/ko/support/">고객지원</a><a href="/ko/terms/">이용약관</a><a href="/ko/privacy/">개인정보처리방침</a><a href="mailto:contact@sector-31.com">contact@sector-31.com</a></div>
     </div>
   </footer>
+  <script>
+    /* page view count: sends the page path only (no IP, cookies or device info stored) */
+    try { navigator.sendBeacon('https://sector31.duckdns.org/api/pv?p=' + encodeURIComponent(location.pathname)); } catch (e) {}
+  </script>
 </body>
 </html>
