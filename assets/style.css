@@ -40,7 +40,7 @@ img { max-width: 100%; display: block; }
 .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 20px; color: var(--ink); }
 .brand img { width: 36px; height: 36px; border-radius: 8px; }
 .brand:hover { text-decoration: none; }
-nav a { margin-left: 18px; color: var(--muted); font-weight: 500; }
+nav a { margin-left: 18px; color: var(--muted); font-weight: 500; white-space: nowrap; display: inline-block; }   /* 10/9 메뉴 글자가 중간에서 줄바뀜 → 메뉴 단위로만 넘어가게 */
 nav a:hover { color: var(--ink); text-decoration: none; }
 nav a.active { color: var(--accent); }
 
@@ -138,7 +138,8 @@ h2 { font-size: 30px; margin: 0 0 10px; letter-spacing: .01em; }
 .site-footer a:hover { color: var(--ink); }
 
 @media (max-width: 640px) {
-  nav a { margin-left: 0; margin-right: 14px; font-size: 15px; }
+  nav { display: flex; flex-wrap: wrap; column-gap: 14px; row-gap: 4px; }
+  nav a { margin-left: 0; margin-right: 0; font-size: 15px; }
   .hero h1 { font-size: 30px; }
   .hero .wrap { padding-top: 48px; padding-bottom: 48px; gap: 28px; }
   h2 { font-size: 25px; }
