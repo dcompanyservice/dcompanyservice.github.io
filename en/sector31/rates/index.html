@@ -38,9 +38,9 @@
 
   <div class="wrap doc">
     <h1>Sector31 Drop Rates</h1>
-    <p class="meta">Sector31 · Dcompany · As of: 2026-10-07 17:05 KST</p>
-    <p>Drop rates for Sector31 summons (random items). This is the same content as in the game (Shop → Summon → <strong>View Rates</strong>) and is generated from the game server's published values.</p>
-    <p><a href="#character">Character</a> · <a href="#soul">Soul</a> · <a href="#emblem">Emblem</a></p>
+    <p class="meta">Sector31 · Dcompany · As of: 2026-10-09 12:13 KST</p>
+    <p>Drop rates for Sector31 summons (random items), plus enhancement success rates and campaign reward multipliers. This is the same content as in the game (Shop → Summon → <strong>View Rates</strong>) and is generated from the game server's published values.</p>
+    <p><a href="#character">Character</a> · <a href="#soul">Soul</a> · <a href="#emblem">Emblem</a> · <a href="#enhance">Enhance</a></p>
 
     <h2 id="character">Character</h2>
     <h3>Summary by Summon Type</h3>
@@ -160,6 +160,63 @@
     <p class="meta">- You may receive a type you already own. Duplicates can be sold or used as enhancement material.</p>
     <p class="meta">- Displayed rates are rounded to 2 decimals and may not total 100%, but draws use exact ratios.</p>
     <p class="meta">- Random item drop rate disclosure. Power is uniformly distributed within the stated range.</p>
+
+    <h2 id="enhance">Enhance</h2>
+    <h3>Soul / Emblem enhancement</h3>
+    <table>
+      <tr><th>Target</th><th>Success</th><th>Base lost on fail</th></tr>
+      <tr><td>+1</td><td>100%</td><td>-</td></tr>
+      <tr><td>+2</td><td>100%</td><td>-</td></tr>
+      <tr><td>+3</td><td>100%</td><td>-</td></tr>
+      <tr><td>+4</td><td>100%</td><td>-</td></tr>
+      <tr><td>+5</td><td>80%</td><td>-</td></tr>
+      <tr><td>+6</td><td>50%</td><td>-</td></tr>
+      <tr><td>+7</td><td>30%</td><td>-</td></tr>
+      <tr><td>+8</td><td>10%</td><td>10%</td></tr>
+      <tr><td>+9</td><td>5%</td><td>10%</td></tr>
+      <tr><td>+10</td><td>2%</td><td>10%</td></tr>
+    </table>
+    <p class="meta">The target is the base level +1 (the material level does not matter).</p>
+    <h3>Character enhancement</h3>
+    <table>
+      <tr><th>Target</th><th>Success</th><th>Base lost on fail</th></tr>
+      <tr><td>+1</td><td>100%</td><td>-</td></tr>
+      <tr><td>+2</td><td>100%</td><td>-</td></tr>
+      <tr><td>+3</td><td>100%</td><td>-</td></tr>
+      <tr><td>+4</td><td>100%</td><td>-</td></tr>
+      <tr><td>+5</td><td>80%</td><td>-</td></tr>
+      <tr><td>+6</td><td>50%</td><td>-</td></tr>
+      <tr><td>+7</td><td>30%</td><td>-</td></tr>
+      <tr><td>+8</td><td>10%</td><td>-</td></tr>
+      <tr><td>+9</td><td>5%</td><td>-</td></tr>
+      <tr><td>+10</td><td>2%</td><td>-</td></tr>
+      <tr><td>+11</td><td>2%</td><td>10%</td></tr>
+      <tr><td>+12</td><td>2%</td><td>10%</td></tr>
+      <tr><td>+13</td><td>2%</td><td>10%</td></tr>
+      <tr><td>+14</td><td>2%</td><td>10%</td></tr>
+      <tr><td>+15</td><td>2%</td><td>10%</td></tr>
+    </table>
+    <p class="meta">If the base is +9 or lower, the target is picked uniformly at random from base+1 to base+material level (+1 if the material is +0), up to +10, and that level&#x27;s success rate applies. From +10, the base goes up by +1.</p>
+    <h3>Enhancement rules</h3>
+    <p class="meta">- The material is consumed whether the attempt succeeds or fails.</p>
+    <p class="meta">- &quot;Base lost on fail&quot; is the chance that the item being enhanced is also lost when the attempt fails.</p>
+    <p class="meta">- On success, power = average of the two powers − a value picked uniformly from 1 to 5 (souls/emblems round down to steps of 5, characters to 1). Range 10–100; if both are 100 (P), it stays 100.</p>
+    <p class="meta">- When a character enhancement to +11 or higher succeeds, stats that have received fewer than 2 bonuses are offered as 3 random candidates (uniform) and you pick one.</p>
+    <h3>Campaign first-clear reward multiplier</h3>
+    <p class="meta">From planet 3, when you clear a sector for the first time, watching an ad (or with the Premium Pass, without an ad) applies a random multiplier below to the coin reward.</p>
+    <table>
+      <tr><th>Multiplier</th><th>Sectors 10/20/30</th><th>Other sectors</th></tr>
+      <tr><td>x2</td><td>26%</td><td>40%</td></tr>
+      <tr><td>x3</td><td>19%</td><td>30%</td></tr>
+      <tr><td>x4</td><td>15%</td><td>20%</td></tr>
+      <tr><td>x5</td><td>11%</td><td>10%</td></tr>
+      <tr><td>x6</td><td>9%</td><td>-</td></tr>
+      <tr><td>x7</td><td>7%</td><td>-</td></tr>
+      <tr><td>x8</td><td>5%</td><td>-</td></tr>
+      <tr><td>x9</td><td>4%</td><td>-</td></tr>
+      <tr><td>x10</td><td>4%</td><td>-</td></tr>
+    </table>
+    <p class="meta">Sector 31 (gem reward) is a fixed x2 with no draw.</p>
 
     <p style="margin-top:28px">See also: <a href="/en/sector31/">Sector31</a> · <a href="/en/support/">Support</a></p>
   </div>

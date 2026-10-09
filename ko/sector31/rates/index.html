@@ -38,10 +38,10 @@
 
   <div class="wrap doc">
     <h1>Sector31 확률 정보</h1>
-    <p class="meta">Sector31 · Dcompany · 기준 시각: 2026-10-07 17:05 KST</p>
-    <p>Sector31의 소환(확률형 아이템) 제공 확률입니다. 게임 안 상점 → 소환 → <strong>확률 보기</strong>와 같은 내용이며, 게임 서버의 공시 값으로 만들어집니다.</p>
+    <p class="meta">Sector31 · Dcompany · 기준 시각: 2026-10-09 12:13 KST</p>
+    <p>Sector31의 소환(확률형 아이템) 제공 확률과 강화 성공률·캠페인 보상 배율입니다. 게임 안 상점 → 소환 → <strong>확률 보기</strong>와 같은 내용이며, 게임 서버의 공시 값으로 만들어집니다.</p>
     <p>「게임산업진흥에 관한 법률」 제33조 제2항 및 같은 법 시행령 제19조의2에 따른 확률형 아이템 정보 공개입니다.</p>
-    <p><a href="#character">캐릭터</a> · <a href="#soul">영혼</a> · <a href="#emblem">엠블럼</a></p>
+    <p><a href="#character">캐릭터</a> · <a href="#soul">영혼</a> · <a href="#emblem">엠블럼</a> · <a href="#enhance">강화·배율</a></p>
 
     <h2 id="character">캐릭터</h2>
     <h3>소환 방법별 요약</h3>
@@ -161,6 +161,63 @@
     <p class="meta">- 이미 가진 것과 같은 종류가 다시 나올 수 있습니다. 중복분은 판매하거나 강화 재료로 쓸 수 있습니다.</p>
     <p class="meta">- 표시 확률은 소수점 셋째 자리에서 반올림해 합계가 100%가 아닐 수 있지만 실제 추첨은 정확한 비율로 이루어집니다.</p>
     <p class="meta">- 확률형 아이템 정보 공개 (게임산업진흥에 관한 법률 제33조 제2항, 시행령 제19조의2). power 는 표기 범위 내 균등 분포.</p>
+
+    <h2 id="enhance">강화·배율</h2>
+    <h3>영혼·엠블럼 강화 성공률</h3>
+    <table>
+      <tr><th>목표 단계</th><th>성공</th><th>실패 시 본체 소멸</th></tr>
+      <tr><td>+1</td><td>100%</td><td>-</td></tr>
+      <tr><td>+2</td><td>100%</td><td>-</td></tr>
+      <tr><td>+3</td><td>100%</td><td>-</td></tr>
+      <tr><td>+4</td><td>100%</td><td>-</td></tr>
+      <tr><td>+5</td><td>80%</td><td>-</td></tr>
+      <tr><td>+6</td><td>50%</td><td>-</td></tr>
+      <tr><td>+7</td><td>30%</td><td>-</td></tr>
+      <tr><td>+8</td><td>10%</td><td>10%</td></tr>
+      <tr><td>+9</td><td>5%</td><td>10%</td></tr>
+      <tr><td>+10</td><td>2%</td><td>10%</td></tr>
+    </table>
+    <p class="meta">목표 단계는 본체 강화 단계 +1 입니다(재료의 강화 단계와 무관).</p>
+    <h3>캐릭터 강화 성공률</h3>
+    <table>
+      <tr><th>목표 단계</th><th>성공</th><th>실패 시 본체 소멸</th></tr>
+      <tr><td>+1</td><td>100%</td><td>-</td></tr>
+      <tr><td>+2</td><td>100%</td><td>-</td></tr>
+      <tr><td>+3</td><td>100%</td><td>-</td></tr>
+      <tr><td>+4</td><td>100%</td><td>-</td></tr>
+      <tr><td>+5</td><td>80%</td><td>-</td></tr>
+      <tr><td>+6</td><td>50%</td><td>-</td></tr>
+      <tr><td>+7</td><td>30%</td><td>-</td></tr>
+      <tr><td>+8</td><td>10%</td><td>-</td></tr>
+      <tr><td>+9</td><td>5%</td><td>-</td></tr>
+      <tr><td>+10</td><td>2%</td><td>-</td></tr>
+      <tr><td>+11</td><td>2%</td><td>10%</td></tr>
+      <tr><td>+12</td><td>2%</td><td>10%</td></tr>
+      <tr><td>+13</td><td>2%</td><td>10%</td></tr>
+      <tr><td>+14</td><td>2%</td><td>10%</td></tr>
+      <tr><td>+15</td><td>2%</td><td>10%</td></tr>
+    </table>
+    <p class="meta">본체가 +9 이하이면 목표 단계가 「본체+1 ~ 본체+재료 강화 단계(재료가 +0이면 +1)」 사이에서 균등하게 무작위로 정해지고(최대 +10) 그 단계의 성공률이 적용됩니다. 본체가 +10 이상이면 +1씩 오릅니다.</p>
+    <h3>강화 규칙</h3>
+    <p class="meta">- 성공·실패와 관계없이 재료로 넣은 것은 사라집니다.</p>
+    <p class="meta">- 「실패 시 본체 소멸」은 강화에 실패했을 때 강화하던 본체까지 사라질 확률입니다.</p>
+    <p class="meta">- 성공 시 파워 = 두 파워의 평균 − 1~5 사이에서 균등하게 무작위로 정한 값(영혼·엠블럼은 5 단위로 내림, 캐릭터는 1 단위). 10~100 범위이며, 두 파워가 모두 100(P)이면 100이 유지됩니다.</p>
+    <p class="meta">- 캐릭터 +11 이상 강화에 성공하면, 강화 보너스를 2번 미만 받은 스탯 중 3개가 균등하게 무작위로 후보로 나오고 그중 하나를 고릅니다.</p>
+    <h3>캠페인 첫 클리어 보상 배율</h3>
+    <p class="meta">행성 3부터 섹터를 처음 클리어하면, 광고를 보거나 프리미엄 패스가 있으면 광고 없이 코인 보상에 아래 배율이 무작위로 정해집니다.</p>
+    <table>
+      <tr><th>배율</th><th>섹터 10·20·30</th><th>그 외 섹터</th></tr>
+      <tr><td>x2</td><td>26%</td><td>40%</td></tr>
+      <tr><td>x3</td><td>19%</td><td>30%</td></tr>
+      <tr><td>x4</td><td>15%</td><td>20%</td></tr>
+      <tr><td>x5</td><td>11%</td><td>10%</td></tr>
+      <tr><td>x6</td><td>9%</td><td>-</td></tr>
+      <tr><td>x7</td><td>7%</td><td>-</td></tr>
+      <tr><td>x8</td><td>5%</td><td>-</td></tr>
+      <tr><td>x9</td><td>4%</td><td>-</td></tr>
+      <tr><td>x10</td><td>4%</td><td>-</td></tr>
+    </table>
+    <p class="meta">섹터 31(보석 보상)은 추첨 없이 2배입니다.</p>
 
     <p style="margin-top:28px">함께 보기: <a href="/ko/sector31/">Sector31</a> · <a href="/ko/support/">고객지원</a></p>
   </div>

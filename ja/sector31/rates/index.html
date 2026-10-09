@@ -38,9 +38,9 @@
 
   <div class="wrap doc">
     <h1>Sector31 提供割合</h1>
-    <p class="meta">Sector31 · Dcompany · 基準時刻: 2026-10-07 17:05 KST</p>
-    <p>Sector31 の召喚（ガチャ）の提供割合です。ゲーム内のショップ → 召喚 → <strong>確率を見る</strong>と同じ内容で、ゲームサーバーの公開値から作成しています。</p>
-    <p><a href="#character">キャラ</a> · <a href="#soul">魂</a> · <a href="#emblem">エンブレム</a></p>
+    <p class="meta">Sector31 · Dcompany · 基準時刻: 2026-10-09 12:13 KST</p>
+    <p>Sector31 の召喚（ガチャ）の提供割合と、強化の成功率・キャンペーン報酬倍率です。ゲーム内のショップ → 召喚 → <strong>確率を見る</strong>と同じ内容で、ゲームサーバーの公開値から作成しています。</p>
+    <p><a href="#character">キャラ</a> · <a href="#soul">魂</a> · <a href="#emblem">エンブレム</a> · <a href="#enhance">強化・倍率</a></p>
 
     <h2 id="character">キャラ</h2>
     <h3>召喚方法別の概要</h3>
@@ -160,6 +160,63 @@
     <p class="meta">- 既に所持しているものと同じ種類が再度出ることがあります。重複分は売却または強化素材に使えます。</p>
     <p class="meta">- 表示確率は小数点第3位を四捨五入しているため合計が100%にならない場合がありますが、実際の抽選は正確な比率で行われます。</p>
     <p class="meta">- ガチャ排出率公開 (JOGA/CESA ガイドライン準拠)。power は表記範囲内で均等分布。</p>
+
+    <h2 id="enhance">強化・倍率</h2>
+    <h3>魂・エンブレム強化の成功率</h3>
+    <table>
+      <tr><th>目標段階</th><th>成功</th><th>失敗時の本体消滅</th></tr>
+      <tr><td>+1</td><td>100%</td><td>-</td></tr>
+      <tr><td>+2</td><td>100%</td><td>-</td></tr>
+      <tr><td>+3</td><td>100%</td><td>-</td></tr>
+      <tr><td>+4</td><td>100%</td><td>-</td></tr>
+      <tr><td>+5</td><td>80%</td><td>-</td></tr>
+      <tr><td>+6</td><td>50%</td><td>-</td></tr>
+      <tr><td>+7</td><td>30%</td><td>-</td></tr>
+      <tr><td>+8</td><td>10%</td><td>10%</td></tr>
+      <tr><td>+9</td><td>5%</td><td>10%</td></tr>
+      <tr><td>+10</td><td>2%</td><td>10%</td></tr>
+    </table>
+    <p class="meta">目標段階は本体の強化段階 +1 です（素材の強化段階は関係ありません）。</p>
+    <h3>キャラクター強化の成功率</h3>
+    <table>
+      <tr><th>目標段階</th><th>成功</th><th>失敗時の本体消滅</th></tr>
+      <tr><td>+1</td><td>100%</td><td>-</td></tr>
+      <tr><td>+2</td><td>100%</td><td>-</td></tr>
+      <tr><td>+3</td><td>100%</td><td>-</td></tr>
+      <tr><td>+4</td><td>100%</td><td>-</td></tr>
+      <tr><td>+5</td><td>80%</td><td>-</td></tr>
+      <tr><td>+6</td><td>50%</td><td>-</td></tr>
+      <tr><td>+7</td><td>30%</td><td>-</td></tr>
+      <tr><td>+8</td><td>10%</td><td>-</td></tr>
+      <tr><td>+9</td><td>5%</td><td>-</td></tr>
+      <tr><td>+10</td><td>2%</td><td>-</td></tr>
+      <tr><td>+11</td><td>2%</td><td>10%</td></tr>
+      <tr><td>+12</td><td>2%</td><td>10%</td></tr>
+      <tr><td>+13</td><td>2%</td><td>10%</td></tr>
+      <tr><td>+14</td><td>2%</td><td>10%</td></tr>
+      <tr><td>+15</td><td>2%</td><td>10%</td></tr>
+    </table>
+    <p class="meta">本体が +9 以下の場合、目標段階は「本体+1 〜 本体+素材の強化段階（素材が +0 なら +1）」の範囲から均等にランダムで決まり（最大 +10）、その段階の成功率が適用されます。本体が +10 以上なら +1 ずつ上がります。</p>
+    <h3>強化のルール</h3>
+    <p class="meta">- 成功・失敗に関係なく、素材は消滅します。</p>
+    <p class="meta">- 「失敗時の本体消滅」は、強化に失敗したとき本体も消滅する確率です。</p>
+    <p class="meta">- 成功時のパワー = 2つのパワーの平均 − 1〜5の範囲から均等にランダムで決まる値（魂・エンブレムは5単位で切り捨て、キャラクターは1単位）。10〜100の範囲で、両方が100（P）なら100のままです。</p>
+    <p class="meta">- キャラクター強化で +11 以上に成功すると、強化ボーナスが2回未満のステータスから3個が均等にランダムで候補になり、その中から1つを選びます。</p>
+    <h3>キャンペーン初回クリア報酬の倍率</h3>
+    <p class="meta">惑星3以降のセクターを初めてクリアすると、広告を視聴するか（プレミアムパスなら広告なしで）コイン報酬に次の倍率がランダムで決まります。</p>
+    <table>
+      <tr><th>倍率</th><th>セクター10・20・30</th><th>その他のセクター</th></tr>
+      <tr><td>x2</td><td>26%</td><td>40%</td></tr>
+      <tr><td>x3</td><td>19%</td><td>30%</td></tr>
+      <tr><td>x4</td><td>15%</td><td>20%</td></tr>
+      <tr><td>x5</td><td>11%</td><td>10%</td></tr>
+      <tr><td>x6</td><td>9%</td><td>-</td></tr>
+      <tr><td>x7</td><td>7%</td><td>-</td></tr>
+      <tr><td>x8</td><td>5%</td><td>-</td></tr>
+      <tr><td>x9</td><td>4%</td><td>-</td></tr>
+      <tr><td>x10</td><td>4%</td><td>-</td></tr>
+    </table>
+    <p class="meta">セクター31（ジェム報酬）は抽選なしで2倍です。</p>
 
     <p style="margin-top:28px">関連ページ: <a href="/ja/sector31/">Sector31</a> · <a href="/ja/support/">サポート</a></p>
   </div>
