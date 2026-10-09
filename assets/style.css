@@ -65,12 +65,12 @@ h2 { font-size: 30px; margin: 0 0 10px; letter-spacing: .01em; }
   background: linear-gradient(100deg, rgba(8,10,20,.90) 0%, rgba(8,10,20,.55) 55%, rgba(8,10,20,.78) 100%);
 }
 .hero .wrap { position: relative; z-index: 1; display: flex; align-items: center; gap: 44px; padding-top: 72px; padding-bottom: 72px; flex-wrap: wrap; }
-.hero .text { flex: 1 1 380px; }
+.hero .text { flex: 1 1 380px; min-width: 0; }
 .hero h1 { font-size: 42px; margin: 0 0 14px; }
 .hero p { color: #cfcde6; font-size: 18px; margin: 0 0 22px; }
 .hero .art { flex: 0 1 360px; }
 .hero .art img { border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,.65); border: 1px solid var(--line-2); }
-.hero .logo { max-width: 440px; margin-bottom: 18px; filter: drop-shadow(0 6px 24px rgba(0,0,0,.6)); }
+.hero .logo { width: 100%; max-width: 440px; height: auto; margin-bottom: 18px; filter: drop-shadow(0 6px 24px rgba(0,0,0,.6)); }
 .btn { display: inline-block; padding: 11px 20px; border-radius: 10px; background: var(--accent); color: #fff; font-weight: 600; margin: 4px 8px 4px 0; transition: background .15s, transform .15s; }
 .btn:hover { background: var(--accent-dark); text-decoration: none; transform: translateY(-1px); }
 .btn.ghost { background: transparent; border: 1px solid var(--line-2); }
@@ -144,4 +144,6 @@ h2 { font-size: 30px; margin: 0 0 10px; letter-spacing: .01em; }
   h2 { font-size: 25px; }
   section { padding: 48px 0; }
   body { background-attachment: scroll; }
+  /* 10/9 모바일에서 넓은 표(개인정보·확률표)가 페이지 전체를 좌우로 밀던 문제 → 표 안에서만 가로 스크롤 */
+  .doc table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 }
