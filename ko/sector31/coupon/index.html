@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sector31 쿠폰 입력 | Dcompany</title>
+  <meta name="description" content="Sector31 쿠폰을 입력하고 게임 우편으로 보상을 받으세요.">
+  <link rel="canonical" href="https://sector-31.com/ko/sector31/coupon/">
+  <link rel="alternate" hreflang="en" href="https://sector-31.com/en/sector31/coupon/">
+  <link rel="alternate" hreflang="ja" href="https://sector-31.com/ja/sector31/coupon/">
+  <link rel="alternate" hreflang="ko" href="https://sector-31.com/ko/sector31/coupon/">
+  <link rel="alternate" hreflang="x-default" href="https://sector-31.com/en/sector31/coupon/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Dcompany">
+  <meta property="og:title" content="Sector31 쿠폰 입력 | Dcompany">
+  <meta property="og:description" content="Sector31 쿠폰을 입력하고 게임 우편으로 보상을 받으세요.">
+  <meta property="og:url" content="https://sector-31.com/ko/sector31/coupon/">
+  <meta property="og:image" content="https://sector-31.com/images/og_image.jpg">
+  <meta property="og:locale" content="ko_KR">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@dcompanyx">
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="stylesheet" href="/assets/style.css?v=20261009b">
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <a class="brand" href="/ko/"><img src="/images/logo_d.png" alt="Dcompany 로고">Dcompany</a>
+      <nav>
+        <a href="/ko/">홈</a>
+        <a class="active" href="/ko/sector31/">Sector31</a>
+        <a href="/ko/allmemo/">AllMemo</a>
+        <a href="/ko/support/">고객지원</a>
+        <a href="/ko/terms/">이용약관</a>
+        <a href="/ko/privacy/">개인정보처리방침</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="wrap doc">
+    <h1>Sector31 쿠폰 입력</h1>
+    <p class="meta">Sector31 · Dcompany</p>
+    <p>쿠폰을 입력하면 보상이 <strong>게임 우편함</strong>으로 바로 지급됩니다. 게임 안 설정의 <strong>쿠폰</strong> 버튼으로 들어오면 게임 ID가 미리 채워져 있습니다.</p>
+    <form id="cp" autocomplete="off" style="max-width:440px;margin:24px 0">
+      <label for="cp_id" style="display:block;font-weight:700;margin-top:12px">게임 ID</label>
+      <input id="cp_id" maxlength="8" autocapitalize="characters" spellcheck="false" style="width:100%;padding:10px;font-size:18px;letter-spacing:2px;text-transform:uppercase;box-sizing:border-box">
+      <div class="meta" style="margin-top:4px">게임 → 친구 화면의 「내 친구 코드」 (영문·숫자 8자)</div>
+      <label for="cp_code" style="display:block;font-weight:700;margin-top:16px">쿠폰 코드</label>
+      <input id="cp_code" maxlength="40" autocapitalize="characters" spellcheck="false" style="width:100%;padding:10px;font-size:18px;letter-spacing:2px;text-transform:uppercase;box-sizing:border-box">
+      <button id="cp_btn" type="submit" style="margin-top:18px;width:100%;padding:12px;font-size:18px;font-weight:700;cursor:pointer">보상 받기</button>
+      <p id="cp_msg" role="status" style="min-height:1.5em;margin-top:14px;font-weight:700"></p>
+    </form>
+    <ul><li>쿠폰은 계정당 한 번만 사용할 수 있습니다.</li><li>쿠폰마다 사용 기간과 수량이 정해져 있습니다.</li><li>보상 우편은 받지 않으면 30일 뒤 사라집니다.</li><li>쿠폰은 판매하거나 현금으로 바꿀 수 없습니다.</li></ul>
+    <p style="margin-top:28px">함께 보기: <a href="/ko/terms/">이용약관</a> · <a href="/ko/support/">고객지원</a></p>
+  </div>
+  <script>
+  (function(){
+    // 게임 API — 기본 실서버. ?api=test 는 테스트 서버(개발 확인용, 이 두 주소 외에는 받지 않는다).
+    var q = new URLSearchParams(location.search);
+    var API = q.get('api') === 'test' ? 'https://49-247-130-11.sslip.io/api' : 'https://api.sector-31.com';
+    var ERR = {"ERR_BAD_ID": "게임 ID를 확인해 주세요 (영문·숫자 4~8자).", "ERR_BAD_CODE": "쿠폰 코드를 확인해 주세요.", "ERR_NO_USER": "게임 ID를 찾을 수 없습니다.", "ERR_NO_COUPON": "사용할 수 없는 쿠폰입니다.", "ERR_COUPON_USED": "이미 사용한 쿠폰입니다.", "ERR_COUPON_EXPIRED": "사용 기간이 끝난 쿠폰입니다.", "ERR_COUPON_NOT_STARTED": "아직 사용 기간이 아닙니다.", "ERR_COUPON_SOLD_OUT": "준비된 수량이 모두 소진되었습니다.", "ERR_USER_BANNED": "이용이 제한된 계정입니다.", "ERR_ACCOUNT_DELETING": "삭제 예약된 계정입니다.", "ERR_TOO_MANY": "시도가 너무 많습니다. 잠시 후 다시 시도해 주세요.", "ERR_MAINTENANCE": "서버 점검 중입니다. 점검이 끝난 뒤 다시 시도해 주세요.", "_": "잠시 후 다시 시도해 주세요."};
+    var OK = "{nick} 님의 우편함으로 보상을 보냈습니다. 게임에서 우편함을 확인해 주세요.", BUSY = "확인 중…", BTN = "보상 받기";
+    var idEl = document.getElementById('cp_id'), codeEl = document.getElementById('cp_code');
+    var btn = document.getElementById('cp_btn'), msg = document.getElementById('cp_msg');
+    if (q.get('id')) idEl.value = String(q.get('id')).toUpperCase().slice(0, 8);
+    if (q.get('code')) codeEl.value = String(q.get('code')).toUpperCase().slice(0, 40);
+    (idEl.value ? codeEl : idEl).focus();
+    function show(ok, t){ msg.style.color = ok ? '#2a8a3a' : '#d33'; msg.textContent = t; }
+    document.getElementById('cp').addEventListener('submit', function(ev){
+      ev.preventDefault();
+      var id = idEl.value.trim().toUpperCase(), code = codeEl.value.trim().toUpperCase();
+      if (!/^[A-Z0-9]{4,8}$/.test(id)) { show(false, ERR.ERR_BAD_ID); return; }
+      if (code.replace(/[\s-]/g, '').length < 4) { show(false, ERR.ERR_BAD_CODE); return; }
+      btn.disabled = true; btn.textContent = BUSY; msg.textContent = '';
+      fetch(API + '/coupon/redeem', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ game_id: id, code: code }) })
+        .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ return { ok: r.ok, j: j }; }); })
+        .then(function(x){
+          if (x.ok && x.j.ok) { show(true, OK.replace('{nick}', x.j.nickname || id)); codeEl.value = ''; }
+          else show(false, ERR[x.j.code] || ERR._);
+        })
+        .catch(function(){ show(false, ERR._); })
+        .then(function(){ btn.disabled = false; btn.textContent = BTN; });
+    });
+  })();
+  </script>
+
+  <footer class="site-footer" style="margin-top:56px">
+    <div class="inner">
+      <div>© 2026 Dcompany. All rights reserved.</div>
+      <div><a href="/ko/support/">고객지원</a><a href="/ko/terms/">이용약관</a><a href="/ko/privacy/">개인정보처리방침</a><a href="mailto:contact@sector-31.com">contact@sector-31.com</a></div>
+    </div>
+  </footer>
+</body>
+</html>

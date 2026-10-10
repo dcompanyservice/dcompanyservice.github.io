@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sector31 Coupon | Dcompany</title>
+  <meta name="description" content="Enter a Sector31 coupon and receive the reward in your in-game mail.">
+  <link rel="canonical" href="https://sector-31.com/en/sector31/coupon/">
+  <link rel="alternate" hreflang="en" href="https://sector-31.com/en/sector31/coupon/">
+  <link rel="alternate" hreflang="ja" href="https://sector-31.com/ja/sector31/coupon/">
+  <link rel="alternate" hreflang="ko" href="https://sector-31.com/ko/sector31/coupon/">
+  <link rel="alternate" hreflang="x-default" href="https://sector-31.com/en/sector31/coupon/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Dcompany">
+  <meta property="og:title" content="Sector31 Coupon | Dcompany">
+  <meta property="og:description" content="Enter a Sector31 coupon and receive the reward in your in-game mail.">
+  <meta property="og:url" content="https://sector-31.com/en/sector31/coupon/">
+  <meta property="og:image" content="https://sector-31.com/images/og_image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@dcompanyx">
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="stylesheet" href="/assets/style.css?v=20261009b">
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <a class="brand" href="/en/"><img src="/images/logo_d.png" alt="Dcompany logo">Dcompany</a>
+      <nav>
+        <a href="/en/">Home</a>
+        <a class="active" href="/en/sector31/">Sector31</a>
+        <a href="/en/allmemo/">AllMemo</a>
+        <a href="/en/support/">Support</a>
+        <a href="/en/terms/">Terms</a>
+        <a href="/en/privacy/">Privacy</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="wrap doc">
+    <h1>Sector31 Coupon</h1>
+    <p class="meta">Sector31 · Dcompany</p>
+    <p>Enter a coupon and the reward is sent straight to your <strong>in-game mailbox</strong>. If you open this page from the <strong>Coupon</strong> button in the game settings, your Game ID is filled in for you.</p>
+    <form id="cp" autocomplete="off" style="max-width:440px;margin:24px 0">
+      <label for="cp_id" style="display:block;font-weight:700;margin-top:12px">Game ID</label>
+      <input id="cp_id" maxlength="8" autocapitalize="characters" spellcheck="false" style="width:100%;padding:10px;font-size:18px;letter-spacing:2px;text-transform:uppercase;box-sizing:border-box">
+      <div class="meta" style="margin-top:4px">In the game: Friends → "My Friend Code" (8 letters/numbers)</div>
+      <label for="cp_code" style="display:block;font-weight:700;margin-top:16px">Coupon code</label>
+      <input id="cp_code" maxlength="40" autocapitalize="characters" spellcheck="false" style="width:100%;padding:10px;font-size:18px;letter-spacing:2px;text-transform:uppercase;box-sizing:border-box">
+      <button id="cp_btn" type="submit" style="margin-top:18px;width:100%;padding:12px;font-size:18px;font-weight:700;cursor:pointer">Get reward</button>
+      <p id="cp_msg" role="status" style="min-height:1.5em;margin-top:14px;font-weight:700"></p>
+    </form>
+    <ul><li>Each coupon can be used once per account.</li><li>Each coupon has its own period and quantity.</li><li>Unclaimed reward mail disappears after 30 days.</li><li>Coupons cannot be sold or exchanged for cash.</li></ul>
+    <p style="margin-top:28px">See also: <a href="/en/terms/">Terms</a> · <a href="/en/support/">Support</a></p>
+  </div>
+  <script>
+  (function(){
+    // 게임 API — 기본 실서버. ?api=test 는 테스트 서버(개발 확인용, 이 두 주소 외에는 받지 않는다).
+    var q = new URLSearchParams(location.search);
+    var API = q.get('api') === 'test' ? 'https://49-247-130-11.sslip.io/api' : 'https://api.sector-31.com';
+    var ERR = {"ERR_BAD_ID": "Please check your Game ID (4-8 letters/numbers).", "ERR_BAD_CODE": "Please check the coupon code.", "ERR_NO_USER": "Game ID not found.", "ERR_NO_COUPON": "This coupon cannot be used.", "ERR_COUPON_USED": "You have already used this coupon.", "ERR_COUPON_EXPIRED": "This coupon has expired.", "ERR_COUPON_NOT_STARTED": "This coupon is not available yet.", "ERR_COUPON_SOLD_OUT": "This coupon has run out.", "ERR_USER_BANNED": "This account is restricted.", "ERR_ACCOUNT_DELETING": "This account is scheduled for deletion.", "ERR_TOO_MANY": "Too many attempts. Please try again later.", "ERR_MAINTENANCE": "The server is under maintenance. Please try again afterwards.", "_": "Please try again in a moment."};
+    var OK = "The reward has been sent to {nick}'s mailbox. Please check your mailbox in the game.", BUSY = "Checking…", BTN = "Get reward";
+    var idEl = document.getElementById('cp_id'), codeEl = document.getElementById('cp_code');
+    var btn = document.getElementById('cp_btn'), msg = document.getElementById('cp_msg');
+    if (q.get('id')) idEl.value = String(q.get('id')).toUpperCase().slice(0, 8);
+    if (q.get('code')) codeEl.value = String(q.get('code')).toUpperCase().slice(0, 40);
+    (idEl.value ? codeEl : idEl).focus();
+    function show(ok, t){ msg.style.color = ok ? '#2a8a3a' : '#d33'; msg.textContent = t; }
+    document.getElementById('cp').addEventListener('submit', function(ev){
+      ev.preventDefault();
+      var id = idEl.value.trim().toUpperCase(), code = codeEl.value.trim().toUpperCase();
+      if (!/^[A-Z0-9]{4,8}$/.test(id)) { show(false, ERR.ERR_BAD_ID); return; }
+      if (code.replace(/[\s-]/g, '').length < 4) { show(false, ERR.ERR_BAD_CODE); return; }
+      btn.disabled = true; btn.textContent = BUSY; msg.textContent = '';
+      fetch(API + '/coupon/redeem', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ game_id: id, code: code }) })
+        .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ return { ok: r.ok, j: j }; }); })
+        .then(function(x){
+          if (x.ok && x.j.ok) { show(true, OK.replace('{nick}', x.j.nickname || id)); codeEl.value = ''; }
+          else show(false, ERR[x.j.code] || ERR._);
+        })
+        .catch(function(){ show(false, ERR._); })
+        .then(function(){ btn.disabled = false; btn.textContent = BTN; });
+    });
+  })();
+  </script>
+
+  <footer class="site-footer" style="margin-top:56px">
+    <div class="inner">
+      <div>© 2026 Dcompany. All rights reserved.</div>
+      <div><a href="/en/support/">Support</a><a href="/en/terms/">Terms of Service</a><a href="/en/privacy/">Privacy Policy</a><a href="mailto:contact@sector-31.com">contact@sector-31.com</a></div>
+    </div>
+  </footer>
+</body>
+</html>

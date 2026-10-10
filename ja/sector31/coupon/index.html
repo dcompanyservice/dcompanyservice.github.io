@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sector31 クーポン入力 | Dcompany</title>
+  <meta name="description" content="Sector31のクーポンを入力すると、ゲーム内メールで報酬を受け取れます。">
+  <link rel="canonical" href="https://sector-31.com/ja/sector31/coupon/">
+  <link rel="alternate" hreflang="en" href="https://sector-31.com/en/sector31/coupon/">
+  <link rel="alternate" hreflang="ja" href="https://sector-31.com/ja/sector31/coupon/">
+  <link rel="alternate" hreflang="ko" href="https://sector-31.com/ko/sector31/coupon/">
+  <link rel="alternate" hreflang="x-default" href="https://sector-31.com/en/sector31/coupon/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Dcompany">
+  <meta property="og:title" content="Sector31 クーポン入力 | Dcompany">
+  <meta property="og:description" content="Sector31のクーポンを入力すると、ゲーム内メールで報酬を受け取れます。">
+  <meta property="og:url" content="https://sector-31.com/ja/sector31/coupon/">
+  <meta property="og:image" content="https://sector-31.com/images/og_image.jpg">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@dcompanyx">
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="stylesheet" href="/assets/style.css?v=20261009b">
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <a class="brand" href="/ja/"><img src="/images/logo_d.png" alt="Dcompanyロゴ">Dcompany</a>
+      <nav>
+        <a href="/ja/">ホーム</a>
+        <a class="active" href="/ja/sector31/">Sector31</a>
+        <a href="/ja/allmemo/">AllMemo</a>
+        <a href="/ja/support/">サポート</a>
+        <a href="/ja/terms/">利用規約</a>
+        <a href="/ja/privacy/">プライバシー</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="wrap doc">
+    <h1>Sector31 クーポン入力</h1>
+    <p class="meta">Sector31 · Dcompany</p>
+    <p>クーポンを入力すると、報酬が<strong>ゲーム内メールボックス</strong>に届きます。ゲーム内の設定にある<strong>クーポン</strong>ボタンから開くと、ゲームIDが入力済みになります。</p>
+    <form id="cp" autocomplete="off" style="max-width:440px;margin:24px 0">
+      <label for="cp_id" style="display:block;font-weight:700;margin-top:12px">ゲームID</label>
+      <input id="cp_id" maxlength="8" autocapitalize="characters" spellcheck="false" style="width:100%;padding:10px;font-size:18px;letter-spacing:2px;text-transform:uppercase;box-sizing:border-box">
+      <div class="meta" style="margin-top:4px">ゲーム → フレンド画面の「自分のフレンドコード」（英数字8文字）</div>
+      <label for="cp_code" style="display:block;font-weight:700;margin-top:16px">クーポンコード</label>
+      <input id="cp_code" maxlength="40" autocapitalize="characters" spellcheck="false" style="width:100%;padding:10px;font-size:18px;letter-spacing:2px;text-transform:uppercase;box-sizing:border-box">
+      <button id="cp_btn" type="submit" style="margin-top:18px;width:100%;padding:12px;font-size:18px;font-weight:700;cursor:pointer">報酬を受け取る</button>
+      <p id="cp_msg" role="status" style="min-height:1.5em;margin-top:14px;font-weight:700"></p>
+    </form>
+    <ul><li>クーポンは1アカウントにつき1回のみ使用できます。</li><li>クーポンごとに使用期間と数量が決まっています。</li><li>報酬メールは受け取らないと30日後に消えます。</li><li>クーポンの販売・換金はできません。</li></ul>
+    <p style="margin-top:28px">あわせて読む: <a href="/ja/terms/">利用規約</a> · <a href="/ja/support/">サポート</a></p>
+  </div>
+  <script>
+  (function(){
+    // 게임 API — 기본 실서버. ?api=test 는 테스트 서버(개발 확인용, 이 두 주소 외에는 받지 않는다).
+    var q = new URLSearchParams(location.search);
+    var API = q.get('api') === 'test' ? 'https://49-247-130-11.sslip.io/api' : 'https://api.sector-31.com';
+    var ERR = {"ERR_BAD_ID": "ゲームIDをご確認ください（英数字4〜8文字）。", "ERR_BAD_CODE": "クーポンコードをご確認ください。", "ERR_NO_USER": "ゲームIDが見つかりません。", "ERR_NO_COUPON": "使用できないクーポンです。", "ERR_COUPON_USED": "すでに使用したクーポンです。", "ERR_COUPON_EXPIRED": "使用期間が終了したクーポンです。", "ERR_COUPON_NOT_STARTED": "まだ使用期間ではありません。", "ERR_COUPON_SOLD_OUT": "用意した数量がなくなりました。", "ERR_USER_BANNED": "利用が制限されているアカウントです。", "ERR_ACCOUNT_DELETING": "削除予約中のアカウントです。", "ERR_TOO_MANY": "試行回数が多すぎます。しばらくしてからお試しください。", "ERR_MAINTENANCE": "サーバーメンテナンス中です。終了後に再度お試しください。", "_": "しばらくしてから再度お試しください。"};
+    var OK = "{nick} さんのメールボックスに報酬を送りました。ゲーム内のメールボックスをご確認ください。", BUSY = "確認中…", BTN = "報酬を受け取る";
+    var idEl = document.getElementById('cp_id'), codeEl = document.getElementById('cp_code');
+    var btn = document.getElementById('cp_btn'), msg = document.getElementById('cp_msg');
+    if (q.get('id')) idEl.value = String(q.get('id')).toUpperCase().slice(0, 8);
+    if (q.get('code')) codeEl.value = String(q.get('code')).toUpperCase().slice(0, 40);
+    (idEl.value ? codeEl : idEl).focus();
+    function show(ok, t){ msg.style.color = ok ? '#2a8a3a' : '#d33'; msg.textContent = t; }
+    document.getElementById('cp').addEventListener('submit', function(ev){
+      ev.preventDefault();
+      var id = idEl.value.trim().toUpperCase(), code = codeEl.value.trim().toUpperCase();
+      if (!/^[A-Z0-9]{4,8}$/.test(id)) { show(false, ERR.ERR_BAD_ID); return; }
+      if (code.replace(/[\s-]/g, '').length < 4) { show(false, ERR.ERR_BAD_CODE); return; }
+      btn.disabled = true; btn.textContent = BUSY; msg.textContent = '';
+      fetch(API + '/coupon/redeem', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ game_id: id, code: code }) })
+        .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ return { ok: r.ok, j: j }; }); })
+        .then(function(x){
+          if (x.ok && x.j.ok) { show(true, OK.replace('{nick}', x.j.nickname || id)); codeEl.value = ''; }
+          else show(false, ERR[x.j.code] || ERR._);
+        })
+        .catch(function(){ show(false, ERR._); })
+        .then(function(){ btn.disabled = false; btn.textContent = BTN; });
+    });
+  })();
+  </script>
+
+  <footer class="site-footer" style="margin-top:56px">
+    <div class="inner">
+      <div>© 2026 Dcompany. All rights reserved.</div>
+      <div><a href="/ja/support/">サポート</a><a href="/ja/terms/">利用規約</a><a href="/ja/privacy/">プライバシーポリシー</a><a href="/ja/tokushoho/">特定商取引法に基づく表記</a><a href="mailto:contact@sector-31.com">contact@sector-31.com</a></div>
+    </div>
+  </footer>
+</body>
+</html>
