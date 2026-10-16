@@ -45,8 +45,16 @@
           죽어가는 행성을 되살리는 방법은 하나뿐입니다. 가장 깊은 층까지 내려가, 잠든 중심핵을 다시 움직이는 것.</p>
         <span class="badge">개발 중</span> <span class="badge">2026년 겨울 출시 예정</span>
         <p style="margin-top:18px">
-          <a class="btn" href="/ko/novel/">소설 읽기</a>
+          <a class="btn" id="play-prereg" href="https://play.google.com/store/apps/details?id=com.dcompany.sector31">Google Play에서 사전등록</a>
+          <a class="btn ghost" href="/ko/novel/">소설 읽기</a>
         </p>
+        <p style="font-size:13px;opacity:.75">Android 사전등록 진행 중 · iOS는 곧 공개됩니다</p>
+        <script>
+          // Android에서는 Play 스토어 앱을 바로 연다(웹은 로그인해야 사전등록 버튼이 보임)
+          if (/Android/i.test(navigator.userAgent)) {
+            document.getElementById('play-prereg').href = 'intent://details?id=com.dcompany.sector31#Intent;scheme=market;package=com.android.vending;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.dcompany.sector31;end';
+          }
+        </script>
       </div>
       <div class="art"><img src="/images/keyart_astronaut.jpg" alt="Sector31 키아트: 우주정거장 옆을 떠다니며 손을 뻗는 우주복 차림의 캐릭터"></div>
     </div>
