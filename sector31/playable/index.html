@@ -25,7 +25,7 @@ window.S31_CTA=function(){var ios=/iPhone|iPad|iPod/i.test(navigator.userAgent)|
 //   규칙(게임 GameEngine.gd 와 같음): 한 번 입력 = 한 칸 · 걸어서 돌 밀기(뒤가 벽·돌·출구면 못 민다, 무게 무관)
 //   · 목표 MaxBreakStones 0 = 「돌 부수지 않고 출구 도달」 — 노란 공격 버튼은 있고 돌을 부수면 즉시 실패(게임 is_failed 와 같음)
 //   · 턴 제한 없음(max_moves 0) · 공격 = 바라보는 칸 110 대미지(이 맵 돌 HP 5~80 = 한 번에 부서짐).
-//   흐름: ① 자동 실패 장면(곧장 출구로 가다 돌을 출구 앞에 밀어 넣음 — 해법 없음) → ② 도전 문구 → ③ 직접 플레이
+//   힌트 동그라미 없음(사용자 결정). 흐름: ① 자동 실패 장면(곧장 출구로 가다 돌을 출구 앞에 밀어 넣음 — 해법 없음) → ② 도전 문구 → ③ 직접 플레이
 //        → ④ 클리어/실패 마지막 화면(설치 버튼). 막힘 = 해법 탐색 결과 없음. 설치는 네트워크별 window.S31_CTA().
 (function () {
 'use strict';
@@ -384,19 +384,6 @@ function drawBanner() {
   cx.globalAlpha = 1;
 }
 
-function drawHint() {
-  if (phase !== 'play' || endCard || S.anim || S.done || now - lastInput < 2600) return;
-  if (!hint || hint.stale) { var sol = solve(S); hint = sol ? sol.first : null; if (!hint) return; }
-  var p = playerScreen(), d = DIRS[hint.dir], k = (now % 1100) / 1100;
-  var hx, hy;
-  hx = p.x + d[0] * T * (0.4 + 1.1 * ease(k)); hy = p.y + T * 0.3 + d[1] * T * (0.4 + 1.1 * ease(k));
-  cx.globalAlpha = k < 0.85 ? 1 : (1 - k) / 0.15;
-  // 손가락(동그라미 + 그림자) — 이모지 대신 도형
-  cx.fillStyle = 'rgba(255,255,255,0.92)'; cx.beginPath(); cx.arc(hx, hy, T * 0.22, 0, Math.PI * 2); cx.fill();
-  cx.strokeStyle = 'rgba(255,191,0,0.95)'; cx.lineWidth = 4; cx.beginPath(); cx.arc(hx, hy, T * 0.3 + k * T * 0.15, 0, Math.PI * 2); cx.stroke();
-  cx.globalAlpha = 1;
-}
-
 function drawEnd() {
   if (!endCard) return;
   var k = ease((now - endCard.t) / 400);
@@ -464,7 +451,7 @@ function frame(ts) {
   drawLight();
   drawFx();
   cx.restore();
-  drawHint();
+  // 다음 한 수 힌트(동그라미)는 그리지 않는다 — 2026-10-17 사용자 "가이드는 필요없을 거 같은데"
   drawHud();
   drawBanner();
   drawEnd();
