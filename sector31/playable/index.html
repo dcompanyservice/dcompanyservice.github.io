@@ -20,22 +20,12 @@ window.S31_ASSETS={"arrow_left": "data:image/webp;base64,UklGRsIGAABXRUJQVlA4WAo
 window.S31_CTA=function(){var ios=/iPhone|iPad|iPod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);window.location.href=ios?'https://apps.apple.com/app/id6818703630':'https://play.google.com/store/apps/details?id=com.dcompany.sector31';};window.S31_NET='web';
 </script>
 <script>
-// Sector31 플레이어블 광고 — 실제 게임 규칙만 쓴다 (2026-10-17)
-//   맵 = 캠페인 행성 1 섹터 23 그대로(scenarios/01.P223_목초지/sector23.json, 2026-10-17 사용자 "1행성 23섹터로").
-//   규칙(게임 GameEngine.gd 와 같음): 한 번 입력 = 한 칸 · 걸어서 돌 밀기(뒤가 벽·돌·출구면 못 민다, 무게 무관)
-//   · 목표 MaxBreakStones 0 = 「돌 부수지 않고 출구 도달」 — 노란 공격 버튼은 있고 돌을 부수면 즉시 실패(게임 is_failed 와 같음)
-//   · 턴 제한 없음(max_moves 0) · 공격 = 바라보는 칸 110 대미지(이 맵 돌 HP 5~80 = 한 번에 부서짐).
-//   힌트 동그라미 없음(사용자 결정). 흐름: ① 자동 실패 장면(곧장 출구로 가다 돌을 출구 앞에 밀어 넣음 — 해법 없음) → ② 도전 문구 → ③ 직접 플레이
-//        → ④ 클리어/실패 마지막 화면(설치 버튼). 막힘 = 해법 탐색 결과 없음. 설치는 네트워크별 window.S31_CTA().
 (function () {
 'use strict';
 var A = window.S31_ASSETS || {};
 var CTA = window.S31_CTA || function () {};
 var cv = document.getElementById('c'), cx = cv.getContext('2d');
-// 기기 글꼴 — 한·일 글꼴을 먼저(캔버스 sans-serif 만 쓰면 윈도 크롬에서 일본어 자간이 벌어진다)
 var FONT = '"Hiragino Sans","Hiragino Kaku Gothic ProN","Apple SD Gothic Neo","Noto Sans CJK JP","Noto Sans JP","Noto Sans KR","Yu Gothic UI","Malgun Gothic",Roboto,sans-serif';
-
-// ── 문구 (기기 언어: ko · ja · 그 외 en) ─────────────────────────────
 var LANG = (navigator.language || 'en').slice(0, 2).toLowerCase();
 if (LANG !== 'ko' && LANG !== 'ja') LANG = 'en';
 var TXT = {
@@ -49,8 +39,6 @@ var TXT = {
         clear: 'Clear!', fail: 'Failed... try again?', install: 'Install Now', retry: 'Retry', tag: 'Push. Break. Go deeper.',
         get: 'GET', blocked: "Can't push into the exit", pushes: 'Pushes', result: 'Pushes %d · Perfect %p', broke: 'You broke a stone... try again?', brokeNow: 'No breaking!', tryN: 'Try %d' }
 }[LANG];
-
-// ── 그림 ───────────────────────────────────────────────────────
 var IMG = {};
 var pending = 0;
 Object.keys(A).forEach(function (k) {
@@ -60,37 +48,23 @@ Object.keys(A).forEach(function (k) {
   im.src = A[k];
   IMG[k] = im;
 });
-
-// ── 맵: 행성 1 섹터 23 (sector23.json 그대로) ───────────────────────
-//  # # # # # #
-//  # 60. . 66#
-//  E . 66. . #      E = 출구(0,2)
-//  # . 62. 62P      P = 시작(5,3, 오른쪽 벽의 입구)
-//  # 6861. . #
-//  # # # # # #
-//  최단 8수(←↑←↓←↑←←). 곧장 출구로(←↑←←) 가면 66 이 출구 앞(1,2)에 들어가 영원히 막힌다.
 var WALL = ['######', '#....#', 'E....#', '#....P', '#....#', '######'];
 var COLS = 6, ROWS = 6, EXIT = { x: 0, y: 2 }, START = { x: 5, y: 3 };
 var ROCKS0 = [{ x: 1, y: 1, id: 60 }, { x: 4, y: 1, id: 66 }, { x: 2, y: 2, id: 66 }, { x: 2, y: 3, id: 62 },
               { x: 4, y: 3, id: 62 }, { x: 1, y: 4, id: 68 }, { x: 2, y: 4, id: 61 }].map(function (r, i) { r.n = i; r.img = 'rock_' + r.id; return r; });
-var PERFECT_PUSH = 4;   // sector23.json meta.target.push — 별점 만점(최단 8수 중 밀기 4번)
-var DMG = 110;          // 기본 STR 100 → 10+STR
-var HP = { 60: 80, 61: 60, 62: 50, 66: 10, 68: 5 };   // StoneData.gd
+var PERFECT_PUSH = 4;
+var DMG = 110;
+var HP = { 60: 80, 61: 60, 62: 50, 66: 10, 68: 5 };
 var DIRS = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] };
-var FACE_ROW = { down: 0, up: 1, left: 2, right: 3 };   // player.webp 행: front·back·left·right
-
+var FACE_ROW = { down: 0, up: 1, left: 2, right: 3 };
 function isWall(x, y) { return x < 0 || y < 0 || x >= COLS || y >= ROWS || WALL[y][x] === '#'; }
 function isExit(x, y) { return x === EXIT.x && y === EXIT.y; }
-
-// ── 상태 ───────────────────────────────────────────────────────
 var S;
 function reset() {
   S = { px: START.x, py: START.y, face: 'left', rocks: ROCKS0.map(function (r) { return Object.assign({}, r); }),
         moves: 0, pushes: 0, anim: null, fx: [], shake: 0, done: false };
 }
 function rockAt(st, x, y) { for (var i = 0; i < st.rocks.length; i++) if (st.rocks[i].x === x && st.rocks[i].y === y) return st.rocks[i]; return null; }
-
-// 규칙 한 걸음 — 결과 종류를 돌려준다(그리기는 따로). 순수 함수처럼 st 만 바꾼다.
 function stepMove(st, dir) {
   var d = DIRS[dir], nx = st.px + d[0], ny = st.py + d[1];
   st.face = dir;
@@ -106,7 +80,6 @@ function stepMove(st, dir) {
   st.px = nx; st.py = ny; st.moves++;
   return { kind: 'move' };
 }
-// 출구까지 갈 수 있나 + 다음 한 수 (너비 우선 — 힌트·막힘 판정). 돌은 id 무관하게 위치만 본다.
 function solve(st) {
   var key = function (s) { return s.px + ',' + s.py + '|' + s.rocks.map(function (r) { return r.x * 10 + r.y; }).sort().join(','); };
   var clone = function (s) { return { px: s.px, py: s.py, face: s.face, moves: 0, pushes: 0, rocks: s.rocks.map(function (r) { return { x: r.x, y: r.y }; }) }; };
@@ -126,8 +99,6 @@ function solve(st) {
   }
   return null;
 }
-
-// ── 화면 크기 ──────────────────────────────────────────────────
 var W = 0, H = 0, DPR = 1, T = 48, OX = 0, OY = 0;
 function resize() {
   DPR = Math.min(window.devicePixelRatio || 1, 3);
@@ -135,30 +106,21 @@ function resize() {
   cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
   cv.style.width = W + 'px'; cv.style.height = H + 'px';
   var top = Math.max(64, H * 0.11), bottom = Math.max(130, H * 0.2);
-  T = Math.floor(Math.min(W / (COLS + 0.1), (H - top - bottom) / (ROWS + 0.1)));   // 6칸 전부(왼쪽 출구·오른쪽 입구가 벽 열에 있다)
+  T = Math.floor(Math.min(W / (COLS + 0.1), (H - top - bottom) / (ROWS + 0.1)));
   OX = Math.round((W - T * COLS) / 2);
   OY = Math.round(top + (H - top - bottom - T * ROWS) / 2);
 }
 window.addEventListener('resize', resize);
-
-// ── 장면 진행 ──────────────────────────────────────────────────
-// phase: demo → challenge → play → end
 var phase = 'demo', banner = null, endCard = null, hint = null, lastInput = 0, t0 = 0, now = 0, tries = 0;
-// 자동 실패 장면 2번(2026-10-17 사용자 "너무 빨리 지나감, 느리게 2번 정도 다른 형태로") — 한 걸음 0.6초
-//   ① 곧장 출구로 → 66 을 출구 앞(1,2)에 밀어 넣음 = 막힘(해법 없음을 solve 로 확인)
-//   ② 아래 길로 → 61 이 68 에 막혀 안 밀리자 노란 버튼으로 부숨 = 부수면 실패(MaxBreakStones 0)
 var DEMOS = [{ seq: ['left', 'up', 'left', 'left'], end: 'stuck' },
              { seq: ['left', 'down', 'left', 'left', 'attack'], end: 'broke' }];
 var DEMO_STEP_MS = 600;
 var demoRun = 0, demoIdx = 0, demoNext = 0;
-
 function showBanner(text, ms, color) { banner = { text: text, t: now, ms: ms, color: color || '#fff' }; }
-
 function animate(kind, dir, extra) {
   var d = DIRS[dir];
   S.anim = { kind: kind, t: now, ms: 200, fx: S.px - (kind === 'walk' ? d[0] : 0), fy: S.py - (kind === 'walk' ? d[1] : 0), rock: extra };
 }
-
 function doMove(dir) {
   if (S.anim || S.done) return;
   var r = stepMove(S, dir);
@@ -183,7 +145,7 @@ function doAttack() {
   if (DMG >= (HP[r.id] || 1)) {
     S.rocks.splice(S.rocks.indexOf(r), 1);
     burst(c, 26, '#c9b48a');
-    if (phase === 'play') {   // MaxBreakStones 0 — 하나라도 부수면 즉시 실패
+    if (phase === 'play') {
       S.done = true;
       showBanner(TXT.brokeNow, 1300, '#ff6b6b');
       setTimeout(function () { endCard = { t: now, win: false, broke: true }; }, 1100);
@@ -214,18 +176,14 @@ function startPlay() {
   phase = 'play'; tries++;
   endCard = null; lastInput = now;
 }
-
-// ── 입력: 스와이프 이동 · 인접 칸 탭(그쪽으로 한 칸 — 돌이면 민다) · 노란 버튼 공격 · 키보드 ──────
 var down = null;
-function btnRect() { var s = Math.max(78, Math.min(110, W * 0.22)); return { x: W - s - Math.max(16, W * 0.06), y: H - s - Math.max(18, H * 0.035), w: s, h: s }; }   // 오른쪽 아래(2026-10-17 사용자 "오른쪽이 좋겠네")
+function btnRect() { var s = Math.max(78, Math.min(110, W * 0.22)); return { x: W - s - Math.max(16, W * 0.06), y: H - s - Math.max(18, H * 0.035), w: s, h: s }; }
 function getRect() { var w = 64, h = 30; return { x: W - w - 12, y: 14, w: w, h: h }; }
 function inR(p, r) { return p.x >= r.x && p.x <= r.x + r.w && p.y >= r.y && p.y <= r.y + r.h; }
 function endButtons() {
   var bw = Math.min(W * 0.72, 320), bh = 58, x = (W - bw) / 2, y = H * 0.62;
   return { install: { x: x, y: y, w: bw, h: bh }, retry: { x: (W - bw * 0.6) / 2, y: y + bh + 18, w: bw * 0.6, h: 44 } };
 }
-// 이동 = 손가락을 뗄 때 한 번(2026-10-17 사용자 "손가락 뗄 때만 반응하게") — 어디서 시작해도(노란 버튼 위 포함)
-//   22px 이상 끌었다 떼면 그 방향으로 한 칸. 짧게 톡 = 노란 버튼이면 공격, 옆 칸이면 그쪽으로 한 칸.
 function dirOf(dx, dy) { return Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : (dy > 0 ? 'down' : 'up'); }
 cv.addEventListener('pointerdown', function (e) { down = { x: e.clientX, y: e.clientY, t: now }; });
 cv.addEventListener('pointercancel', function () { down = null; });
@@ -253,7 +211,7 @@ cv.addEventListener('pointerup', function (e) {
     }
     return;
   }
-  doMove(dirOf(dx, dy));   // 아주 빠른 스와이프(움직임 이벤트 없이 떼기)
+  doMove(dirOf(dx, dy));
 });
 window.addEventListener('keydown', function (e) {
   var m = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right' }[e.key];
@@ -262,8 +220,6 @@ window.addEventListener('keydown', function (e) {
   if (m) doMove(m); else if (e.key === ' ') doAttack();
 });
 function skipToPlay() { if (phase === 'play') return; banner = null; startPlay(); }
-
-// ── 효과 ───────────────────────────────────────────────────────
 function T_(x, y) { return { x: OX + (x + 0.5) * T, y: OY + (y + 0.5) * T }; }
 function floatText(p, s, color) { S.fx.push({ k: 'txt', x: p.x, y: p.y, s: s, c: color, t: now }); }
 function burst(p, n, color) {
@@ -272,11 +228,8 @@ function burst(p, n, color) {
     S.fx.push({ k: 'dot', x: p.x, y: p.y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - T, c: color, r: T * (0.04 + Math.random() * 0.06), t: now });
   }
 }
-
-// ── 그리기 ─────────────────────────────────────────────────────
 function rr(x, y, w, h, r) { cx.beginPath(); cx.moveTo(x + r, y); cx.arcTo(x + w, y, x + w, y + h, r); cx.arcTo(x + w, y + h, x, y + h, r); cx.arcTo(x, y + h, x, y, r); cx.arcTo(x, y, x + w, y, r); cx.closePath(); }
 function ease(k) { return k < 0 ? 0 : k > 1 ? 1 : 1 - Math.pow(1 - k, 3); }
-
 function drawBoard() {
   var floor = IMG.floor;
   for (var y = 0; y < ROWS; y++) for (var x = 0; x < COLS; x++) {
@@ -284,7 +237,6 @@ function drawBoard() {
     var px = OX + x * T, py = OY + y * T;
     if (floor && floor.width) cx.drawImage(floor, px, py, T + 0.5, T + 0.5); else { cx.fillStyle = '#d8ccb3'; cx.fillRect(px, py, T, T); }
   }
-  // 벽 쪽 그림자(게임 벽 가장자리처럼 바닥이 어둠으로 녹아든다)
   for (y = 0; y < ROWS; y++) for (x = 0; x < COLS; x++) {
     if (isWall(x, y) && !isExit(x, y)) continue;
     px = OX + x * T; py = OY + y * T;
@@ -296,18 +248,15 @@ function drawBoard() {
       cx.fillStyle = g; cx.fillRect(px, py, T, T);
     });
   }
-  // 출구
   var e = T_(EXIT.x, EXIT.y);
   if (IMG.door && IMG.door.width) cx.drawImage(IMG.door, e.x - T * 0.42, e.y - T * 0.42, T * 0.84, T * 0.84);
-  var bob = Math.sin(now / 260) * T * 0.08;   // 출구 화살표(게임 exit_arrow_left) — 출구 칸 위에서 왼쪽으로 까딱
+  var bob = Math.sin(now / 260) * T * 0.08;
   if (IMG.arrow_left && IMG.arrow_left.width) { cx.globalAlpha = 0.9; cx.drawImage(IMG.arrow_left, e.x - T * 0.3 + bob, e.y - T * 0.3, T * 0.6, T * 0.6); cx.globalAlpha = 1; }
 }
-
 function drawRock(r, x, y) {
   var im = IMG[r.img], s = T * 1.08;
   if (im && im.width) cx.drawImage(im, x - s / 2, y - s / 2 - T * 0.04, s, s);
 }
-
 function playerScreen() {
   var a = S.anim, x = S.px, y = S.py;
   if (a && a.kind === 'walk') { var k = ease((now - a.t) / a.ms); x = a.fx + (S.px - a.fx) * k; y = a.fy + (S.py - a.fy) * k; }
@@ -323,14 +272,12 @@ function drawPlayer() {
   cx.fillStyle = 'rgba(0,0,0,0.28)'; cx.beginPath(); cx.ellipse(p.x, p.y + T * 0.36, T * 0.3, T * 0.1, 0, 0, Math.PI * 2); cx.fill();
   cx.drawImage(im, frame * 128, row * 128, 128, 128, p.x - s / 2, p.y + T * 0.48 - s * 0.93, s, s);
 }
-
 function drawLight() {
   var p = playerScreen();
   var g = cx.createRadialGradient(p.x, p.y, T * 3.2, p.x, p.y, T * 6.5);
   g.addColorStop(0, 'rgba(2,2,5,0)'); g.addColorStop(1, 'rgba(2,2,5,0.78)');
   cx.fillStyle = g; cx.fillRect(0, 0, W, H);
 }
-
 function drawFx() {
   S.fx = S.fx.filter(function (f) {
     var age = (now - f.t) / 1000;
@@ -347,9 +294,7 @@ function drawFx() {
     cx.globalAlpha = 1; return true;
   });
 }
-
 function drawHud() {
-  // 위: 이동·밀기 수
   if (phase === 'play' || phase === 'demo') {
     var label = TXT.moves + ' ' + S.moves + '   ' + TXT.pushes + ' ' + S.pushes;
     cx.font = '800 ' + Math.round(Math.max(16, Math.min(T * 0.3, 20))) + 'px ' + FONT;
@@ -357,11 +302,9 @@ function drawHud() {
     cx.fillStyle = 'rgba(20,24,40,0.85)'; rr(x, y, w, 38, 19); cx.fill();
     cx.fillStyle = '#fff'; cx.textAlign = 'center'; cx.textBaseline = 'middle'; cx.fillText(label, W / 2, y + 20);
   }
-  // 상단 작은 설치 버튼(항상)
   var g = getRect();
   cx.fillStyle = '#ffbf00'; rr(g.x, g.y, g.w, g.h, 15); cx.fill();
   cx.fillStyle = '#1a1300'; cx.font = '800 15px ' + FONT; cx.textAlign = 'center'; cx.textBaseline = 'middle'; cx.fillText(TXT.get, g.x + g.w / 2, g.y + g.h / 2 + 1);
-  // 아래: 노란 공격 버튼(오른쪽) + 왼쪽에 목표 문구(노랑) · 조작 안내(작게)
   if (phase === 'play' && !endCard) {
     var b = btnRect(), pulse = 1 + Math.sin(now / 300) * 0.03;
     if (IMG.btn_a && IMG.btn_a.width) cx.drawImage(IMG.btn_a, b.x + b.w * (1 - pulse) / 2, b.y + b.h * (1 - pulse) / 2, b.w * pulse, b.h * pulse);
@@ -370,7 +313,6 @@ function drawHud() {
       cx.font = weight + ' ' + size + 'px ' + FONT;
       var mw = cx.measureText(text).width; if (mw > gw) { size = Math.floor(size * gw / mw); cx.font = weight + ' ' + size + 'px ' + FONT; }
     };
-    // 두 줄 간격은 글씨 크기 기준(넓은 화면에서 글씨가 커지면 고정 간격이 겹쳤다 — 2026-10-17 사용자 지적), 크기 상한 22/15
     cx.textAlign = 'right'; cx.textBaseline = 'middle';
     var s1 = Math.round(Math.min(22, Math.max(15, T * 0.28))), s2 = Math.round(Math.min(15, Math.max(12, T * 0.21)));
     var mid = b.y + b.h / 2, gap = (s1 + s2) * 0.62;
@@ -380,7 +322,6 @@ function drawHud() {
     cx.fillStyle = 'rgba(255,255,255,0.8)'; cx.fillText(TXT.swipe, gx, mid + gap / 2);
   }
 }
-
 function drawBanner() {
   if (!banner) return;
   var age = now - banner.t; if (age > banner.ms) { banner = null; return; }
@@ -389,13 +330,12 @@ function drawBanner() {
   cx.fillStyle = 'rgba(0,0,0,0.55)'; cx.fillRect(0, H * 0.38, W, H * 0.14);
   var fs = Math.min(W * 0.1, 46);
   cx.font = '900 ' + fs + 'px ' + FONT;
-  var tw = cx.measureText(banner.text).width; if (tw > W * 0.9) fs *= W * 0.9 / tw;   // 화면 폭에 맞춰 줄인다
+  var tw = cx.measureText(banner.text).width; if (tw > W * 0.9) fs *= W * 0.9 / tw;
   cx.font = '900 ' + Math.round(fs * (0.6 + 0.4 * k)) + 'px ' + FONT;
   cx.textAlign = 'center'; cx.textBaseline = 'middle'; cx.lineWidth = 6; cx.strokeStyle = 'rgba(0,0,0,0.8)';
   cx.strokeText(banner.text, W / 2, H * 0.45); cx.fillStyle = banner.color; cx.fillText(banner.text, W / 2, H * 0.45);
   cx.globalAlpha = 1;
 }
-
 function drawEnd() {
   if (!endCard) return;
   var k = ease((now - endCard.t) / 400);
@@ -407,7 +347,6 @@ function drawEnd() {
   cx.font = '900 ' + Math.round(Math.min(W * 0.09, 40)) + 'px ' + FONT; cx.fillText('Sector31', W / 2, iy + s + 36);
   cx.fillStyle = endCard.win ? '#ffd166' : '#ff9b9b'; cx.font = '800 ' + Math.round(Math.min(W * 0.06, 24)) + 'px ' + FONT;
   cx.fillText(endCard.win ? TXT.clear : (endCard.broke ? TXT.broke : TXT.fail), W / 2, iy + s + 78);
-  // 클리어 화면의 「밀기 N번 · 만점 4번」 줄은 뺐다(2026-10-17 사용자 "무슨 말인지 모르겠네")
   cx.fillStyle = 'rgba(255,255,255,0.75)'; cx.font = '600 ' + Math.round(Math.min(W * 0.045, 18)) + 'px ' + FONT;
   cx.fillText(TXT.tag, W / 2, iy + s + 110);
   var b = endButtons(), pulse = 1 + Math.sin(now / 220) * 0.035, bi = b.install;
@@ -420,8 +359,6 @@ function drawEnd() {
   cx.fillStyle = '#fff'; cx.font = '700 17px ' + FONT; cx.fillText(TXT.retry, W / 2, br.y + br.h / 2 + 1);
   cx.globalAlpha = 1;
 }
-
-// ── 자동 실패 장면 ───────────────────────────────────────────────
 function runDemo() {
   if (phase !== 'demo' || S.anim || now < demoNext) return;
   var d = DEMOS[demoRun];
@@ -444,19 +381,16 @@ function runDemo() {
   showBanner(TXT.challenge, 1900, '#ffffff');
   setTimeout(function () { if (phase === 'challenge') startPlay(); }, 1950);
 }
-
-// ── 루프 ───────────────────────────────────────────────────────
 function frame(ts) {
   now = ts;
   if (S.anim && now - S.anim.t >= S.anim.ms) { S.anim = null; if (hint) hint.stale = true; }
   runDemo();
-  if (phase === 'play' && !endCard && now - lastInput > 45000) endCard = { t: now, win: false };   // 오래 손 안 대면 마지막 화면
+  if (phase === 'play' && !endCard && now - lastInput > 45000) endCard = { t: now, win: false };
   cx.setTransform(DPR, 0, 0, DPR, 0, 0);
   cx.fillStyle = '#05050c'; cx.fillRect(0, 0, W, H);
   var sh = now - S.shake < 160 ? (Math.random() - 0.5) * T * 0.08 : 0;
   cx.save(); cx.translate(sh, sh * 0.5);
   drawBoard();
-  // 돌 + 플레이어를 행 순서로(아래 행이 앞)
   var a = S.anim, items = [];
   S.rocks.forEach(function (r) {
     var x = r.x, y = r.y;
@@ -469,13 +403,11 @@ function frame(ts) {
   drawLight();
   drawFx();
   cx.restore();
-  // 다음 한 수 힌트(동그라미)는 그리지 않는다 — 2026-10-17 사용자 "가이드는 필요없을 거 같은데"
   drawHud();
   drawBanner();
   drawEnd();
   requestAnimationFrame(frame);
 }
-
 function boot() {
   resize();
   reset();
@@ -483,10 +415,7 @@ function boot() {
   if (window.S31_WAIT_READY) window.S31_WAIT_READY(go); else go();
 }
 if (pending === 0) boot();
-// 브라우저 확인용(미리보기 빌드만) — 자동 검사가 막힘 판정·정답 길이를 직접 본다
-if (window.S31_NET === 'preview') window.__s31 = { state: function () { return S; }, solve: function () { return solve(S); }, phase: function () { return phase; }, demo: function () { return demoRun; } };
 })();
-
 </script>
 </body>
 </html>
