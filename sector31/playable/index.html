@@ -224,7 +224,11 @@ function endButtons() {
   var bw = Math.min(W * 0.72, 320), bh = 58, x = (W - bw) / 2, y = H * 0.62;
   return { install: { x: x, y: y, w: bw, h: bh }, retry: { x: (W - bw * 0.6) / 2, y: y + bh + 18, w: bw * 0.6, h: 44 } };
 }
+// 이동 = 손가락을 뗄 때 한 번(2026-10-17 사용자 "손가락 뗄 때만 반응하게") — 어디서 시작해도(노란 버튼 위 포함)
+//   22px 이상 끌었다 떼면 그 방향으로 한 칸. 짧게 톡 = 노란 버튼이면 공격, 옆 칸이면 그쪽으로 한 칸.
+function dirOf(dx, dy) { return Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : (dy > 0 ? 'down' : 'up'); }
 cv.addEventListener('pointerdown', function (e) { down = { x: e.clientX, y: e.clientY, t: now }; });
+cv.addEventListener('pointercancel', function () { down = null; });
 cv.addEventListener('pointerup', function (e) {
   if (!down) return;
   var p = { x: e.clientX, y: e.clientY }, dx = p.x - down.x, dy = p.y - down.y;
@@ -249,7 +253,7 @@ cv.addEventListener('pointerup', function (e) {
     }
     return;
   }
-  doMove(Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : (dy > 0 ? 'down' : 'up'));
+  doMove(dirOf(dx, dy));   // 아주 빠른 스와이프(움직임 이벤트 없이 떼기)
 });
 window.addEventListener('keydown', function (e) {
   var m = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right' }[e.key];
