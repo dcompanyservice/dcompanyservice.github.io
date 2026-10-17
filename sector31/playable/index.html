@@ -41,13 +41,13 @@ if (LANG !== 'ko' && LANG !== 'ja') LANG = 'en';
 var TXT = {
   ko: { stuck: '막혔다!', challenge: '당신이라면 깰 수 있을까?', goal: '돌 부수지 않고 출구 도달', moves: '이동', swipe: '밀어서 이동 · 노란 버튼 = 공격',
         clear: '클리어!', fail: '실패… 다시 해 볼까?', install: '지금 설치하기', retry: '다시 하기', tag: '밀고, 부수고, 더 깊이',
-        get: '설치', blocked: '출구로는 못 민다', pushes: '밀기', result: '밀기 %d번 · 만점 %p번', broke: '돌을 부숴서 실패… 다시 해 볼까?', brokeNow: '부수면 실패!' },
+        get: '설치', blocked: '출구로는 못 민다', pushes: '밀기', result: '밀기 %d번 · 만점 %p번', broke: '돌을 부숴서 실패… 다시 해 볼까?', brokeNow: '부수면 실패!', tryN: '시도 %d' },
   ja: { stuck: '詰んだ！', challenge: 'あなたならクリアできる？', goal: '石を壊さずに出口に到達', moves: '移動', swipe: 'スワイプで移動・黄色ボタン＝攻撃',
         clear: 'クリア！', fail: '失敗…もう一度？', install: '今すぐインストール', retry: 'もう一度', tag: '押して、壊して、もっと深く',
-        get: '入手', blocked: '出口には押せない', pushes: '押した数', result: '押した数 %d・満点 %p', broke: '石を壊して失敗…もう一度？', brokeNow: '壊したら失敗！' },
+        get: '入手', blocked: '出口には押せない', pushes: '押した数', result: '押した数 %d・満点 %p', broke: '石を壊して失敗…もう一度？', brokeNow: '壊したら失敗！', tryN: 'チャレンジ %d' },
   en: { stuck: 'Stuck!', challenge: 'Can you clear it?', goal: 'Reach the Exit without Breaking Stones', moves: 'Moves', swipe: 'Swipe to move · Yellow button = attack',
         clear: 'Clear!', fail: 'Failed... try again?', install: 'Install Now', retry: 'Retry', tag: 'Push. Break. Go deeper.',
-        get: 'GET', blocked: "Can't push into the exit", pushes: 'Pushes', result: 'Pushes %d · Perfect %p', broke: 'You broke a stone... try again?', brokeNow: 'No breaking!' }
+        get: 'GET', blocked: "Can't push into the exit", pushes: 'Pushes', result: 'Pushes %d · Perfect %p', broke: 'You broke a stone... try again?', brokeNow: 'No breaking!', tryN: 'Try %d' }
 }[LANG];
 
 // ── 그림 ───────────────────────────────────────────────────────
@@ -144,8 +144,13 @@ window.addEventListener('resize', resize);
 // ── 장면 진행 ──────────────────────────────────────────────────
 // phase: demo → challenge → play → end
 var phase = 'demo', banner = null, endCard = null, hint = null, lastInput = 0, t0 = 0, now = 0, tries = 0;
-var DEMO = ['left', 'up', 'left', 'left'];   // 곧장 출구로 → 66 을 출구 앞(1,2)에 밀어 넣음(진짜 막힘 — 해법 없음을 solve 로 확인)
-var demoIdx = 0, demoNext = 0;
+// 자동 실패 장면 2번(2026-10-17 사용자 "너무 빨리 지나감, 느리게 2번 정도 다른 형태로") — 한 걸음 0.6초
+//   ① 곧장 출구로 → 66 을 출구 앞(1,2)에 밀어 넣음 = 막힘(해법 없음을 solve 로 확인)
+//   ② 아래 길로 → 61 이 68 에 막혀 안 밀리자 노란 버튼으로 부숨 = 부수면 실패(MaxBreakStones 0)
+var DEMOS = [{ seq: ['left', 'up', 'left', 'left'], end: 'stuck' },
+             { seq: ['left', 'down', 'left', 'left', 'attack'], end: 'broke' }];
+var DEMO_STEP_MS = 600;
+var demoRun = 0, demoIdx = 0, demoNext = 0;
 
 function showBanner(text, ms, color) { banner = { text: text, t: now, ms: ms, color: color || '#fff' }; }
 
@@ -398,10 +403,7 @@ function drawEnd() {
   cx.font = '900 ' + Math.round(Math.min(W * 0.09, 40)) + 'px ' + FONT; cx.fillText('Sector31', W / 2, iy + s + 36);
   cx.fillStyle = endCard.win ? '#ffd166' : '#ff9b9b'; cx.font = '800 ' + Math.round(Math.min(W * 0.06, 24)) + 'px ' + FONT;
   cx.fillText(endCard.win ? TXT.clear : (endCard.broke ? TXT.broke : TXT.fail), W / 2, iy + s + 78);
-  if (endCard.win) {   // 시뮬·게임 별점 만점 기준 = meta.target.push 4
-    cx.fillStyle = S.pushes <= PERFECT_PUSH ? '#ffd166' : 'rgba(255,255,255,0.8)'; cx.font = '700 ' + Math.round(Math.min(W * 0.042, 17)) + 'px ' + FONT;
-    cx.fillText(TXT.result.replace('%d', S.pushes).replace('%p', PERFECT_PUSH), W / 2, iy + s + 140);
-  }
+  // 클리어 화면의 「밀기 N번 · 만점 4번」 줄은 뺐다(2026-10-17 사용자 "무슨 말인지 모르겠네")
   cx.fillStyle = 'rgba(255,255,255,0.75)'; cx.font = '600 ' + Math.round(Math.min(W * 0.045, 18)) + 'px ' + FONT;
   cx.fillText(TXT.tag, W / 2, iy + s + 110);
   var b = endButtons(), pulse = 1 + Math.sin(now / 220) * 0.035, bi = b.install;
@@ -418,16 +420,25 @@ function drawEnd() {
 // ── 자동 실패 장면 ───────────────────────────────────────────────
 function runDemo() {
   if (phase !== 'demo' || S.anim || now < demoNext) return;
-  if (demoIdx < DEMO.length) { doMove(DEMO[demoIdx++]); demoNext = now + 330; return; }
-  if (demoIdx === DEMO.length) {
-    demoIdx++;
-    showBanner(TXT.stuck, 1300, '#ff6b6b');
-    demoNext = now + 1500;
+  var d = DEMOS[demoRun];
+  if (demoIdx === 0 && !S.demoLabel) { S.demoLabel = true; showBanner(TXT.tryN.replace('%d', demoRun + 1), 900, '#ffffff'); demoNext = now + 1100; return; }
+  if (demoIdx < d.seq.length) {
+    var a = d.seq[demoIdx++];
+    if (a === 'attack') doAttack(); else doMove(a);
+    demoNext = now + DEMO_STEP_MS;
     return;
   }
+  if (demoIdx === d.seq.length) {
+    demoIdx++;
+    showBanner(d.end === 'broke' ? TXT.brokeNow : TXT.stuck, 1700, '#ff6b6b');
+    demoNext = now + 2000;
+    return;
+  }
+  if (++demoRun < DEMOS.length) { reset(); demoIdx = 0; demoNext = now + 300; return; }
   phase = 'challenge';
-  showBanner(TXT.challenge, 1700, '#ffffff');
-  setTimeout(function () { if (phase === 'challenge') startPlay(); }, 1750);
+  reset();
+  showBanner(TXT.challenge, 1900, '#ffffff');
+  setTimeout(function () { if (phase === 'challenge') startPlay(); }, 1950);
 }
 
 // ── 루프 ───────────────────────────────────────────────────────
@@ -469,7 +480,7 @@ function boot() {
 }
 if (pending === 0) boot();
 // 브라우저 확인용(미리보기 빌드만) — 자동 검사가 막힘 판정·정답 길이를 직접 본다
-if (window.S31_NET === 'preview') window.__s31 = { state: function () { return S; }, solve: function () { return solve(S); }, phase: function () { return phase; } };
+if (window.S31_NET === 'preview') window.__s31 = { state: function () { return S; }, solve: function () { return solve(S); }, phase: function () { return phase; }, demo: function () { return demoRun; } };
 })();
 
 </script>
