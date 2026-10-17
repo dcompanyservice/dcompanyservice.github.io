@@ -361,11 +361,14 @@ function drawHud() {
       cx.font = weight + ' ' + size + 'px ' + FONT;
       var mw = cx.measureText(text).width; if (mw > gw) { size = Math.floor(size * gw / mw); cx.font = weight + ' ' + size + 'px ' + FONT; }
     };
+    // 두 줄 간격은 글씨 크기 기준(넓은 화면에서 글씨가 커지면 고정 간격이 겹쳤다 — 2026-10-17 사용자 지적), 크기 상한 22/15
     cx.textAlign = 'right'; cx.textBaseline = 'middle';
-    fit(TXT.goal, Math.round(Math.max(15, T * 0.28)), 800);
-    cx.fillStyle = '#ffd166'; cx.fillText(TXT.goal, gx, b.y + b.h / 2 - 12);
-    fit(TXT.swipe, Math.round(Math.max(12, T * 0.21)), 600);
-    cx.fillStyle = 'rgba(255,255,255,0.8)'; cx.fillText(TXT.swipe, gx, b.y + b.h / 2 + 14);
+    var s1 = Math.round(Math.min(22, Math.max(15, T * 0.28))), s2 = Math.round(Math.min(15, Math.max(12, T * 0.21)));
+    var mid = b.y + b.h / 2, gap = (s1 + s2) * 0.62;
+    fit(TXT.goal, s1, 800);
+    cx.fillStyle = '#ffd166'; cx.fillText(TXT.goal, gx, mid - gap / 2);
+    fit(TXT.swipe, s2, 600);
+    cx.fillStyle = 'rgba(255,255,255,0.8)'; cx.fillText(TXT.swipe, gx, mid + gap / 2);
   }
 }
 
