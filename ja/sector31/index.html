@@ -45,10 +45,18 @@
           死んでいく星を生き返らせる方法はひとつだけ。いちばん深い層まで降りて、眠った中心核をもう一度動かすことです。</p>
         <span class="badge">開発中</span> <span class="badge">2026年冬 リリース予定</span>
         <p style="margin-top:18px">
-          <a class="btn" href="https://x.com/dcompanyx" target="_blank" rel="noopener">Xで開発の様子を見る</a>
+          <a class="btn" id="play-prereg" href="https://play.google.com/store/apps/details?id=com.dcompany.sector31">Google Playで事前登録</a>
+          <a class="btn ghost" href="https://x.com/dcompanyx" target="_blank" rel="noopener">Xで開発の様子を見る</a>
           <a class="btn ghost" href="/sector31/playable/?lang=ja">ブラウザで遊んでみる</a>
           <a class="btn ghost" href="/ja/novel/">小説を読む</a>
         </p>
+        <p style="font-size:13px;opacity:.75">Android版 事前登録受付中・iOS版はまもなく公開します</p>
+        <script>
+          // Android では Play ストアアプリを直接開く(ウェブ版はログインしないと事前登録ボタンが出ない)
+          if (/Android/i.test(navigator.userAgent)) {
+            document.getElementById('play-prereg').href = 'intent://details?id=com.dcompany.sector31#Intent;scheme=market;package=com.android.vending;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.dcompany.sector31;end';
+          }
+        </script>
       </div>
       <div class="art"><img src="/images/keyart_astronaut.jpg" alt="Sector31キーアート：宇宙ステーションのそばを漂い、手を伸ばす宇宙服のキャラクター"></div>
     </div>
@@ -163,5 +171,6 @@
       <div><a href="/ja/support/">サポート</a><a href="/ja/terms/">利用規約</a><a href="/ja/privacy/">プライバシーポリシー</a><a href="/ja/tokushoho/">特定商取引法に基づく表記</a><a href="mailto:contact@sector-31.com">contact@sector-31.com</a></div>
     </div>
   </footer>
+  <script src="/assets/track.js?v=20261020" defer></script>
 </body>
 </html>
