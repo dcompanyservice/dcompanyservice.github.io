@@ -42,11 +42,19 @@
         <img class="logo" src="/images/logo_sector31.png" alt="Sector31 logo">
         <p>A puzzle strategy game for iOS and Android.<br>
           The only way to revive a dying planet: descend to its deepest layer and set its sleeping core in motion again.</p>
-        <span class="badge">In development</span> <span class="badge">Winter 2026</span>
+        <span class="badge">Now on Google Play (Hong Kong)</span>
         <p style="margin-top:18px">
-          <a class="btn" href="https://x.com/dcompanyx" target="_blank" rel="noopener">Follow development on X</a>
+          <a class="btn" id="play-get" href="https://play.google.com/store/apps/details?id=com.dcompany.sector31"><svg viewBox="0 0 512 512" width="20" height="20" aria-hidden="true" focusable="false" style="vertical-align:-4px;margin-right:8px"><path fill="#00A0FF" d="M64 34 L280 256 L64 478 Q48 470 48 450 L48 62 Q48 42 64 34Z"/><path fill="#00F076" d="M64 34 L345 190 L280 256Z"/><path fill="#FF3A44" d="M64 478 L280 256 L345 322Z"/><path fill="#FFD500" d="M345 190 L440 243 Q462 256 440 269 L345 322 L280 256Z"/></svg>Get it on Google Play</a>
           <a class="btn ghost" href="/sector31/playable/?lang=en">Play in your browser</a>
+          <a class="btn ghost" href="https://x.com/dcompanyx" target="_blank" rel="noopener">Follow on X</a>
         </p>
+        <p style="font-size:13px;opacity:.75">Available on Android in Hong Kong · iOS coming soon</p>
+        <script>
+          // Open the Play Store app directly on Android
+          if (/Android/i.test(navigator.userAgent)) {
+            document.getElementById('play-get').href = 'intent://details?id=com.dcompany.sector31#Intent;scheme=market;package=com.android.vending;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.dcompany.sector31;end';
+          }
+        </script>
       </div>
       <div class="art"><img src="/images/keyart_astronaut.jpg" alt="Sector31 key art: a character in a space suit floating beside a space station, reaching out"></div>
     </div>
@@ -144,8 +152,8 @@
       <h2>Release</h2>
       <div class="info">
         <p><strong>Platforms:</strong> iOS, Android</p>
-        <p><strong>Status:</strong> In development</p>
-        <p><strong>Planned release:</strong> Winter 2026</p>
+        <p><strong>Status:</strong> Available on Android (Hong Kong)</p>
+        <p><strong>iOS:</strong> Coming soon</p>
         <p><strong>Developer / Publisher:</strong> Dcompany</p>
         <p><strong>News:</strong> <a href="https://x.com/dcompanyx" target="_blank" rel="noopener">X (@dcompanyx)</a></p>
         <p><strong>Contact:</strong> <a href="mailto:contact@sector-31.com">contact@sector-31.com</a></p>
